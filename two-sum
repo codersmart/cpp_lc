@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+ 
+ using namespace std;
+class Solution {
+public:
+ 
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+        auto found = false;
+        auto begin = nums.begin();
+        vector<int> ret;
+        
+        // Sort
+        using iter = vector<int>::iterator;
+        vector<iter> vi;
+        for(size_t i = 0; i < nums.size(); i++) vi.push_back(begin + i);
+        sort(vi.begin(), vi.end(), [](iter x, iter y){ return *x < *y; });
+        
+        int min = *vi.front();
+        vector<iter>::iterator end = vi.begin() + 1;
+        
+        // Find the end of search
+        while( end != vi.end() && ** (end) + min <= target) end ++;
+        
+        
+        if(end - vi.begin() >= 2){            
+            auto first = vi.begin();
+            while(first != end - 1)
+            {
+                auto next = first;
+                next = next + 1;
+                while(next != end)
+                {
+                    //cout << **first << "x"<< **next << endl;
+                    if(**first + **next == target){
+                        //cout << **first << " " << **next;
+                        ret.push_back(*first - begin + 1);
+                        ret.push_back(*next - begin + 1);
+                        found = true;
+                        sort(ret.begin(), ret.end());
+                        break;
+                    }
+                    next ++;
+                }
+                if(found) break;
+                first ++;
+            }
+            
+        }
+        return ret;
+        
+    }
+};
+
+int mainx() 
+{
+    vector<int> nums = {3, 1, 4, 1, 5};
+    Solution a;
+    for(auto x :a.twoSum(nums, 5)) cout << x << " ";
+}
